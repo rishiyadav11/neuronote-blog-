@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { userRouter } from './routes/user'
 import {bookRouter} from './routes/blog';
+import { cors } from 'hono/cors';
 
 export const app = new Hono<{
   Bindings: {
@@ -9,6 +10,14 @@ export const app = new Hono<{
   }
 }>();
 
+
+app.use("/*", cors({
+  origin: '*',
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Authorization', 'Content-Type'],
+  exposeHeaders: ['Authorization'],
+  maxAge: 600,
+  credentials: true,}))
 
 app.get('/', (c) => c.text('hello this is'))
 

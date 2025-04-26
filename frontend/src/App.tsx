@@ -1,7 +1,14 @@
+import AppRoutes from "./AppRoutes"
+import Footer from "./components/Footer"
+import Navbar from "./components/Navbar"
 
 const App = () => {
   return (
-    <div>App</div>
+    <>
+    <Navbar/>
+    <AppRoutes/>
+    <Footer/>
+    </>
   )
 }
 

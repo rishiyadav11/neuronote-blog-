@@ -38,7 +38,7 @@
       data: {
         email,
         name,              // Use 'name' properly here
-        password: hashedPassword,
+          password: hashedPassword,
       },
     });
 
