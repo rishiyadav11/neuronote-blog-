@@ -40,18 +40,20 @@ bookRouter.get('/:id', async (c) => {
 
 
 bookRouter.post('/add', async (c) => {
-  const userId = c.req.user?.id; // Accessing userId from the middleware's user object
+  const userId = c.req.user?.id;
   if (!userId) {
     c.status(401);
     return c.json({ error: 'Unauthorized: userId not found' });
   }
 
   const body = await c.req.json();
+  
   const post = await prisma.post.create({
     data: {
       title: body.title,
       content: body.content,
-      authorId: userId, // Use userId for the post's author
+      media: body.media, // <-- Add this line
+      authorId: userId,
     }
   });
 
@@ -59,21 +61,24 @@ bookRouter.post('/add', async (c) => {
     id: post.id,
   });
 });
+
+
+
+
 bookRouter.put('/:id', async (c) => {
-  const userId = c.req.user?.id; // Accessing userId from the middleware's user object
+  const userId = c.req.user?.id;
   if (!userId) {
     c.status(401);
     return c.json({ error: 'Unauthorized: userId not found' });
   }
 
-  const id = c.req.param('id'); // Get the post id from URL params
-  const body = await c.req.json(); // Get the updated post data from request body
+  const id = c.req.param('id');
+  const body = await c.req.json();
 
-  // Ensure post exists and the user is the author
   const post = await prisma.post.findUnique({
     where: {
       id,
-      authorId: userId, // Only allow updates by the author
+      authorId: userId,
     },
   });
 
@@ -82,16 +87,78 @@ bookRouter.put('/:id', async (c) => {
     return c.json({ error: 'Post not found or you are not the author' });
   }
 
-  // Proceed with updating the post
   await prisma.post.update({
     where: {
-      id, // Use id from URL
+      id,
     },
     data: {
       title: body.title,
       content: body.content,
+      media: body.media, // <-- Add this line
     },
   });
 
   return c.text('Post updated');
+});
+
+
+bookRouter.delete('/:id', async (c) => {
+  const userId = c.req.user?.id;
+  if (!userId) {
+    c.status(401);
+    return c.json({ error: 'Unauthorized: userId not found' });
+  }
+
+  const id = c.req.param('id');
+
+  const post = await prisma.post.findUnique({
+    where: {
+      id,
+      authorId: userId, // Ensure only author can delete
+    },
+  });
+
+  if (!post) {
+    c.status(404);
+    return c.json({ error: 'Post not found or you are not the author' });
+  }
+
+  await prisma.post.delete({
+    where: {
+      id,
+    },
+  });
+
+  return c.json({ message: 'Post deleted successfully' });
+});
+
+
+
+
+bookRouter.delete('/bulk/delete', async (c) => {
+  const userId = c.req.user?.id;
+  if (!userId) {
+    c.status(401);
+    return c.json({ error: 'Unauthorized: userId not found' });
+  }
+
+  const body = await c.req.json(); // Expecting { ids: ["id1", "id2", "id3"] }
+  
+  if (!Array.isArray(body.ids)) {
+    c.status(400);
+    return c.json({ error: 'Invalid request. "ids" should be an array.' });
+  }
+
+  const result = await prisma.post.deleteMany({
+    where: {
+      id: {
+        in: body.ids,
+      },
+      authorId: userId, // Safety: only delete your own posts
+    },
+  });
+
+  return c.json({
+    message: `${result.count} posts deleted successfully`,
+  });
 });
