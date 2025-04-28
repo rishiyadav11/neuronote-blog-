@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link , useNavigate } from "react-router-dom";
 import { FaEye ,FaEyeSlash } from "react-icons/fa";
 import { useAuth } from "../hooks/useAuth";
+import toast from "react-hot-toast";
 
 
 const SignUpcompo = () => {
@@ -18,17 +19,22 @@ const SignUpcompo = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+
+    if (!formData.email || !formData.password || !formData.name) {
+      toast.error("All fields are mandatory!");
+      return;
+    }
     try {
       await signup({
         email: formData.email,
         name: formData.name,
         password: formData.password,
       });
+      toast.success("Signup successful!");
       navigate("/blogs"); // <-- after signup success, navigate to blogs
-
-      alert("Signup successful!");
     } catch (error) {
-      alert("Signup failed!");
+      toast.error("Signup failed!");
     }
   };
   return (

@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { useAuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
-
   const { isAuthenticated } = useAuthContext();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -18,19 +17,21 @@ const Navbar = () => {
   ];
 
   const loggedInLinks = [
+    { name: "All blogs", link: "/blogs" },
     { name: "Write", link: "/write" },
     { name: "About", link: "/about" },
   ];
 
   const dropdownLinks = [
-    { name: "Profile", link: "/profile/username" },
-    { name: "Dashboard", link: "/dashboard" },
     { name: "Logout", link: "/logout" },
   ];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -43,7 +44,7 @@ const Navbar = () => {
     <div className="h-20 flex items-center justify-between px-6 border-b bg-white relative">
       {/* Logo */}
       <div className="text-3xl font-extrabold bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-        <Link to="/">Neuronote</Link>
+        <Link to="/">neuronotes</Link>
       </div>
 
       {/* Desktop Links */}
@@ -64,13 +65,15 @@ const Navbar = () => {
               onClick={() => setIsOpen(!isOpen)}
               className="relative inline-flex items-center cursor-pointer justify-center w-10 h-10 overflow-hidden bg-gradient-to-br from-blue-900 via-indigo-900 to-black rounded-full"
             >
-              <span className="font-medium text-gray-200">JL</span>
+              <span className="font-medium text-gray-200">Nn</span>
             </button>
 
             {/* Dropdown */}
             <div
               className={`absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md py-2 z-10 transform transition-all duration-300 origin-top ${
-                isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
+                isOpen
+                  ? "scale-100 opacity-100"
+                  : "scale-95 opacity-0 pointer-events-none"
               }`}
             >
               {dropdownLinks.map((item) => (
@@ -122,7 +125,9 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div
         className={`md:hidden absolute top-20 left-0 w-full bg-white shadow-md transform transition-all duration-300 ${
-          menuOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0 pointer-events-none"
+          menuOpen
+            ? "scale-y-100 opacity-100"
+            : "scale-y-0 opacity-0 pointer-events-none"
         } origin-top`}
       >
         <div className="flex flex-col p-4">

@@ -5,7 +5,6 @@ import { z } from "zod";
 import { useAuthContext } from "../context/AuthContext";
 
 const API_URL =import.meta.env.VITE_BASE_URL || "http://localhost:5000";
-console.log(API_URL, "API_URL");
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(false);

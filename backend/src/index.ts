@@ -11,13 +11,18 @@ export const app = new Hono<{
 }>();
 
 
-app.use("/*", cors({
-  origin: '*',
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Authorization', 'Content-Type'],
-  exposeHeaders: ['Authorization'],
-  maxAge: 600,
-  credentials: true,}))
+
+  app.use("/*", cors({
+    origin: '*', // You can change '*' to your frontend domain in production
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Authorization', 'Content-Type', 'X-XSRF-TOKEN'], // Include any custom headers you're using
+    exposeHeaders: ['Authorization', 'X-XSRF-TOKEN'],
+    maxAge: 600,
+    credentials: true, // Allows credentials (cookies) to be sent
+  }))
+
+
+  app.options("*", (c) => c.text('OK'))
 
 app.get('/', (c) => c.text('hello this is'))
 

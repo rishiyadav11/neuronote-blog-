@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link , useNavigate} from "react-router-dom";
 import { FaEye ,FaEyeSlash } from "react-icons/fa";
 import { useAuth } from "../hooks/useAuth";
+import { toast } from "react-hot-toast";
 const Signincompo = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { signin, loading } = useAuth();
@@ -11,20 +12,26 @@ const Signincompo = () => {
     password: "",
   });
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.email || !formData.password) {
+      toast.error("All fields are mandatory!");
+      return;
+    }
+    
     try {
       await signin({
         email: formData.email,
         password: formData.password,
       });
-      navigate("/blogs"); // <-- after signup success, navigate to blogs
-      alert("Signup successful!");
+      toast.success("Signin successful!");
+      navigate("/blogs");
     } catch (error) {
-      alert("Signup failed!");
+      toast.error("Signin failed!");
     }
   };
+  
   return (
     <div className="h-full w-[90% ] md:w-1/2  bg-zinc-100 flex justify-center items-center">
       <div className="text-2xl md:text-3xl h-auto rounded-lg flex flex-col justify-center items-center p-5">

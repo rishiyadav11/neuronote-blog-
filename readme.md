@@ -1,16 +1,18 @@
-# 🧠 Neuronote
+# 🧠 neuronotes
 
-Neuronote is a fullstack note-taking application built with **Hono.js** on the backend and **React** on the frontend. It's designed for simplicity, speed, and cloud-friendly deployment.
+neuronotes is a fullstack note-taking application built with **Hono.js** on the backend and **React** on the frontend. It's designed for simplicity, speed, and cloud-friendly deployment.
 
 ## 📦 Tech Stack
 
 ### Backend (Hono.js)
+
 - ⚡️ [Hono.js](https://hono.dev/) – ultra-fast web framework for Cloudflare Workers and other edge runtimes.
 - 🧬 [Prisma + Accelerate](https://www.prisma.io/accelerate) – type-safe database access with Accelerate for edge optimization.
 - 🌐 Cloudflare Workers (or Node.js-compatible edge runtime)
 - 🗄️ PostgreSQL
 
 ### Frontend (React)
+
 - ⚛️ [React](https://reactjs.org/)
 - 🎨 Tailwind CSS (for UI)
 - 📦 Vite (for fast development build)
@@ -26,9 +28,10 @@ Neuronote is a fullstack note-taking application built with **Hono.js** on the b
 ## 🛠️ Installation
 
 ### 1. Clone the repository
+
 ```bash
-git clone https://github.com/yourusername/neuronote.git
-cd neuronote
+git clone https://github.com/yourusername/neuronotes.git
+cd neuronotes
 2. Setup Backend
 bash
 Copy
@@ -67,3 +70,4 @@ Frontend can be deployed to Vercel, Netlify, or Cloudflare Pages.
 
 🤝 Contributing
 Contributions are welcome! Fork the repo, create a feature branch, and open a PR 🚀
+```

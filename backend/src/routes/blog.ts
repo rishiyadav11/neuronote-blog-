@@ -23,8 +23,6 @@ bookRouter.get('/bulk', async (c) => {
   return c.json(posts);
 });
 
-// Apply the authMiddleware to all routes that need authentication
-bookRouter.use(authMiddleware);
 
 bookRouter.get('/:id', async (c) => {
   const id = c.req.param('id');
@@ -37,6 +35,11 @@ bookRouter.get('/:id', async (c) => {
 
   return c.json(post);
 });
+
+
+// Apply the authMiddleware to all routes that need authentication
+bookRouter.use(authMiddleware);
+
 
 
 bookRouter.post('/add', async (c) => {
@@ -54,6 +57,7 @@ bookRouter.post('/add', async (c) => {
       content: body.content,
       media: body.media, // <-- Add this line
       authorId: userId,
+      published:true
     }
   });
 
